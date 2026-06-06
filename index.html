@@ -1,0 +1,128 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
+<h1>📚 PDF-Voice</h1>
+
+<p>
+Lee y escucha PDFs en varios idiomas
+</p>
+
+<p>
+Sube un PDF y escúchalo
+</p>
+
+<input
+type="file"
+id="pdf"
+accept=".pdf"
+>
+
+<br><br>
+
+<button onclick="leerPDF()">
+Leer PDF
+</button>
+
+<button onclick="pausar()">
+Pausar
+</button>
+
+<button onclick="continuar()">
+Continuar
+</button>
+
+<button onclick="parar()">
+Parar
+</button>
+
+<button onclick="reiniciar()">
+Reiniciar libro
+</button>
+
+<br><br>
+
+<label>
+Velocidad:
+</label>
+
+<select id="velocidad">
+
+<option value="0.75">
+0.75×
+</option>
+
+<option value="1" selected>
+1×
+</option>
+
+<option value="1.25">
+1.25×
+</option>
+
+<option value="1.5">
+1.5×
+</option>
+
+<option value="2">
+2×
+</option>
+
+</select>
+
+<br><br>
+
+<p id="estado">
+Esperando PDF...
+</p>
+
+<progress
+id="barra"
+value="0"
+max="100">
+</progress>
+
+<p id="porcentaje">
+0%
+</p>
+<br>
+
+<p id="tiempo">
+⏳ Calculando...
+</p>
+
+<button
+id="tema"
+onclick="modoOscuro()"
+>
+🌙 Modo oscuro
+</button>
+<select id="voz">
+
+<option value="es-ES">
+Español 🇪🇸
+</option>
+
+<option value="en-US">
+English 🇬🇧
+</option>
+
+<option value="de-DE">
+Deutsch 🇩🇪
+</option>
+
+<option value="ru-RU">
+Русский 🇷🇺
+</option>
+
+<option value="zh-CN">
+中文 (Mandarín) 🇨🇳
+</option>
+
+<option value="it-IT">
+Italiano 🇮🇹
+</option>
+
+<option value="fr-FR">
+Français 🇫🇷
+</option>
+
+</select>
