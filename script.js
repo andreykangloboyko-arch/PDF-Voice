@@ -211,6 +211,9 @@ document
 voz.onend=
 resolve;
 
+voz.onerror=
+resolve;
+
 speechSynthesis
 .speak(
 voz);
