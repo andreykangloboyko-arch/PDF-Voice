@@ -1,10 +1,11 @@
-let detenido=false;
+let detenido = false;
+let pausado = false;
 
 async function leerPDF(){
 
-detenido=false;
+detenido = false;
 
-const archivo=
+const archivo =
 document
 .getElementById("pdf")
 .files[0];
@@ -21,18 +22,27 @@ return;
 
 speechSynthesis.cancel();
 
-const buffer=
+const buffer =
 await archivo.arrayBuffer();
 
-const pdf=
+const pdf =
 await pdfjsLib
 .getDocument({
 data:buffer
 })
 .promise;
 
+let paginaActual =
+Number(
+localStorage.getItem(
+"pagina"
+)
+)
+||
+1;
+
 for(
-let i=1;
+let i=paginaActual;
 i<=pdf.numPages;
 i++
 ){
@@ -44,6 +54,11 @@ detenido
 break;
 
 }
+
+localStorage.setItem(
+"pagina",
+i
+);
 
 document
 .getElementById(
@@ -60,11 +75,7 @@ pdf.numPages
 +
 " 🔊";
 
-document
-.getElementById(
-"barra"
-)
-.value=
+const progreso =
 Math.round(
 (
 i
@@ -77,28 +88,88 @@ pdf.numPages
 
 document
 .getElementById(
+"barra"
+)
+.value =
+progreso;
+
+document
+.getElementById(
 "porcentaje"
 )
-.innerText=
-Math.round(
-(
-i
-/
-pdf.numPages
-)
-*
-100
-)
+.innerText =
+progreso
 +
 "%";
 
-const pagina=
+  const velocidad =
+Number(
+document
+.getElementById(
+"velocidad"
+)
+.value
+);
+
+const paginasRestantes =
+pdf.numPages
+-
+i;
+
+const minutos =
+Math.ceil(
+(
+paginasRestantes
+*
+1.5
+)
+/
+velocidad
+);
+
+const horas =
+Math.floor(
+minutos
+/
+60
+);
+
+const mins =
+minutos
+%
+60;
+
+document
+.getElementById(
+"tiempo"
+)
+.innerText =
+horas>0
+?
+"⏳ Quedan ~"
++
+horas
++
+"h "
++
+mins
++
+" min"
+:
+"⏳ Quedan ~"
++
+mins
++
+" min";
+  
+const pagina =
 await pdf.getPage(i);
 
-const contenido=
-await pagina.getTextContent();
+const contenido =
+await pagina
+.getTextContent();
 
-const texto=
+const texto =
 contenido.items
 .map(
 x=>x.str
@@ -106,8 +177,7 @@ x=>x.str
 .join(" ");
 
 if(
-texto.trim()
-===""
+texto.length<20
 ){
 
 continue;
@@ -117,13 +187,9 @@ continue;
 await new Promise(
 resolve=>{
 
-const voz=
+const voz =
 new SpeechSynthesisUtterance(
 texto
-.slice(
-0,
-3000
-)
 );
 
 voz.lang=
@@ -145,14 +211,25 @@ document
 voz.onend=
 resolve;
 
-voz.onerror=
-resolve;
-
-speechSynthesis.speak(
-voz
-);
+speechSynthesis
+.speak(
+voz);
 
 });
+
+while(
+speechSynthesis.paused
+){
+
+await new Promise(
+r=>
+setTimeout(
+r,
+300
+)
+);
+
+}
 
 }
 
@@ -161,6 +238,10 @@ document
 "estado"
 )
 .innerText=
+detenido
+?
+"Parado ⏹"
+:
 "Terminado ✅";
 
 }
@@ -182,6 +263,35 @@ function continuar(){
 
 speechSynthesis.resume();
 
+const pagina =
+localStorage.getItem(
+"pagina"
+);
+
+const archivo =
+document
+.getElementById(
+"pdf"
+)
+.files[0];
+
+if(
+archivo
+){
+
+document
+.getElementById(
+"estado"
+)
+.innerText=
+"Página "
++
+pagina
++
+" de 150 🔊";
+
+}else{
+
 document
 .getElementById(
 "estado"
@@ -191,9 +301,11 @@ document
 
 }
 
+}
+
 function parar(){
 
-detenido=true;
+detenido = true;
 
 speechSynthesis.cancel();
 
@@ -204,17 +316,30 @@ document
 .innerText=
 "Parado ⏹";
 
+document
+.getElementById(
+"pdf"
+).value="";
+
 }
 
 function reiniciar(){
+
+localStorage.removeItem(
+"pagina"
+);
 
 speechSynthesis.cancel();
 
 document
 .getElementById(
+"pdf"
+).value="";
+
+document
+.getElementById(
 "barra"
-)
-.value=0;
+).value=0;
 
 document
 .getElementById(
@@ -228,10 +353,9 @@ document
 "estado"
 )
 .innerText=
-"Esperando PDF...";
+"Progreso borrado 🗑";
 
 }
-
 function modoOscuro(){
 
 document
@@ -241,19 +365,31 @@ document
 "oscuro"
 );
 
-const boton=
+const boton =
 document
 .getElementById(
 "tema"
 );
 
-boton.innerText=
-document.body.classList.contains(
+if(
+document
+.body
+.classList
+.contains(
 "oscuro"
 )
-?
-"☀️ Modo claro"
-:
+){
+
+boton
+.innerText=
+"☀️ Modo claro";
+
+}else{
+
+boton
+.innerText=
 "🌙 Modo oscuro";
+
+}
 
 }
