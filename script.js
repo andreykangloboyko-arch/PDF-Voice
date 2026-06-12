@@ -1,16 +1,10 @@
-let anuncioVisto=false;
-
-let detenido = false;
-
-let pausado = false;
+let detenido=false;
 
 async function leerPDF(){
-  
 
-  
-detenido = false;
+detenido=false;
 
-const archivo =
+const archivo=
 document
 .getElementById("pdf")
 .files[0];
@@ -27,27 +21,18 @@ return;
 
 speechSynthesis.cancel();
 
-const buffer =
+const buffer=
 await archivo.arrayBuffer();
 
-const pdf =
+const pdf=
 await pdfjsLib
 .getDocument({
 data:buffer
 })
 .promise;
 
-let paginaActual =
-Number(
-localStorage.getItem(
-"pagina"
-)
-)
-||
-1;
-
 for(
-let i=paginaActual;
+let i=1;
 i<=pdf.numPages;
 i++
 ){
@@ -59,11 +44,6 @@ detenido
 break;
 
 }
-
-localStorage.setItem(
-"pagina",
-i
-);
 
 document
 .getElementById(
@@ -80,7 +60,11 @@ pdf.numPages
 +
 " 🔊";
 
-const progreso =
+document
+.getElementById(
+"barra"
+)
+.value=
 Math.round(
 (
 i
@@ -93,88 +77,28 @@ pdf.numPages
 
 document
 .getElementById(
-"barra"
-)
-.value =
-progreso;
-
-document
-.getElementById(
 "porcentaje"
 )
-.innerText =
-progreso
+.innerText=
+Math.round(
+(
+i
+/
+pdf.numPages
+)
+*
+100
+)
 +
 "%";
 
-  const velocidad =
-Number(
-document
-.getElementById(
-"velocidad"
-)
-.value
-);
-
-const paginasRestantes =
-pdf.numPages
--
-i;
-
-const minutos =
-Math.ceil(
-(
-paginasRestantes
-*
-1.5
-)
-/
-velocidad
-);
-
-const horas =
-Math.floor(
-minutos
-/
-60
-);
-
-const mins =
-minutos
-%
-60;
-
-document
-.getElementById(
-"tiempo"
-)
-.innerText =
-horas>0
-?
-"⏳ Quedan ~"
-+
-horas
-+
-"h "
-+
-mins
-+
-" min"
-:
-"⏳ Quedan ~"
-+
-mins
-+
-" min";
-  
-const pagina =
+const pagina=
 await pdf.getPage(i);
 
-const contenido =
-await pagina
-.getTextContent();
+const contenido=
+await pagina.getTextContent();
 
-const texto =
+const texto=
 contenido.items
 .map(
 x=>x.str
@@ -182,7 +106,8 @@ x=>x.str
 .join(" ");
 
 if(
-texto.trim().length===0
+texto.trim()
+===""
 ){
 
 continue;
@@ -192,36 +117,13 @@ continue;
 await new Promise(
 resolve=>{
 
-const voz =
-new SpeechSynthesisUtterance();
-
-voz.text =
+const voz=
+new SpeechSynthesisUtterance(
 texto
 .slice(
 0,
 3000
-);
-
-voz.lang =
-document
-.getElementById(
-"voz"
 )
-.value;
-
-voz.volume =
-1;
-
-voz.pitch =
-1;
-
-voz.rate =
-Number(
-document
-.getElementById(
-"velocidad"
-)
-.value
 );
 
 voz.lang=
@@ -230,18 +132,7 @@ document
 "voz"
 )
 .value;
-voz.volume=1;
 
-voz.pitch=1;
-
-voz.rate=
-Number(
-document
-.getElementById(
-"velocidad"
-)
-.value
-);
 voz.rate=
 Number(
 document
@@ -256,36 +147,12 @@ resolve;
 
 voz.onerror=
 resolve;
-voz.onerror=
-resolve;
-
-speechSynthesis.cancel();
-
-setTimeout(
-()=>{
 
 speechSynthesis.speak(
-voz);
-
-},
-150
+voz
 );
 
 });
-
-while(
-speechSynthesis.paused
-){
-
-await new Promise(
-r=>
-setTimeout(
-r,
-300
-)
-);
-
-}
 
 }
 
@@ -294,10 +161,6 @@ document
 "estado"
 )
 .innerText=
-detenido
-?
-"Parado ⏹"
-:
 "Terminado ✅";
 
 }
@@ -316,43 +179,8 @@ document
 }
 
 function continuar(){
-if(
-speechSynthesis.paused
-){
 
 speechSynthesis.resume();
-
-}
-speechSynthesis.resume();
-
-const pagina =
-localStorage.getItem(
-"pagina"
-);
-
-const archivo =
-document
-.getElementById(
-"pdf"
-)
-.files[0];
-
-if(
-archivo
-){
-
-document
-.getElementById(
-"estado"
-)
-.innerText=
-"Página "
-+
-pagina
-+
-" de 150 🔊";
-
-}else{
 
 document
 .getElementById(
@@ -363,11 +191,9 @@ document
 
 }
 
-}
-
 function parar(){
 
-detenido = true;
+detenido=true;
 
 speechSynthesis.cancel();
 
@@ -378,30 +204,17 @@ document
 .innerText=
 "Parado ⏹";
 
-document
-.getElementById(
-"pdf"
-).value="";
-
 }
 
 function reiniciar(){
-
-localStorage.removeItem(
-"pagina"
-);
 
 speechSynthesis.cancel();
 
 document
 .getElementById(
-"pdf"
-).value="";
-
-document
-.getElementById(
 "barra"
-).value=0;
+)
+.value=0;
 
 document
 .getElementById(
@@ -415,9 +228,10 @@ document
 "estado"
 )
 .innerText=
-"Progreso borrado 🗑";
+"Esperando PDF...";
 
 }
+
 function modoOscuro(){
 
 document
@@ -427,31 +241,19 @@ document
 "oscuro"
 );
 
-const boton =
+const boton=
 document
 .getElementById(
 "tema"
 );
 
-if(
-document
-.body
-.classList
-.contains(
+boton.innerText=
+document.body.classList.contains(
 "oscuro"
 )
-){
-
-boton
-.innerText=
-"☀️ Modo claro";
-
-}else{
-
-boton
-.innerText=
+?
+"☀️ Modo claro"
+:
 "🌙 Modo oscuro";
-
-}
 
 }
