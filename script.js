@@ -188,8 +188,35 @@ await new Promise(
 resolve=>{
 
 const voz =
-new SpeechSynthesisUtterance(
+new SpeechSynthesisUtterance();
+
+voz.text =
 texto
+.slice(
+0,
+3000
+);
+
+voz.lang =
+document
+.getElementById(
+"voz"
+)
+.value;
+
+voz.volume =
+1;
+
+voz.pitch =
+1;
+
+voz.rate =
+Number(
+document
+.getElementById(
+"velocidad"
+)
+.value
 );
 
 voz.lang=
@@ -224,16 +251,26 @@ resolve;
 
 voz.onerror=
 resolve;
+voz.onerror=
+resolve;
 
 speechSynthesis.cancel();
 
 setTimeout(
 ()=>{
 
-speechSynthesis
-.speak(
-voz
+speechSynthesis.cancel();
+
+await new Promise(
+r=>
+setTimeout(
+r,
+150
+)
 );
+
+speechSynthesis.speak(
+voz);
 
 },
 100
