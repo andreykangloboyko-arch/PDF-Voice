@@ -177,7 +177,7 @@ x=>x.str
 .join(" ");
 
 if(
-texto.length<20
+texto.trim().length===0
 ){
 
 continue;
