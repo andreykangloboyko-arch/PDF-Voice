@@ -198,7 +198,18 @@ document
 "voz"
 )
 .value;
+voz.volume=1;
 
+voz.pitch=1;
+
+voz.rate=
+Number(
+document
+.getElementById(
+"velocidad"
+)
+.value
+);
 voz.rate=
 Number(
 document
@@ -214,9 +225,19 @@ resolve;
 voz.onerror=
 resolve;
 
+speechSynthesis.cancel();
+
+setTimeout(
+()=>{
+
 speechSynthesis
 .speak(
-voz);
+voz
+);
+
+},
+100
+);
 
 });
 
@@ -263,7 +284,13 @@ document
 }
 
 function continuar(){
+if(
+speechSynthesis.paused
+){
 
+speechSynthesis.resume();
+
+}
 speechSynthesis.resume();
 
 const pagina =
