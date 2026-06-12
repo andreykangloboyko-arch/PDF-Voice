@@ -1,8 +1,23 @@
+let anuncioVisto=false;
+
 let detenido = false;
+
 let pausado = false;
 
 async function leerPDF(){
+  
+if(
+!anuncioVisto
+){
 
+alert(
+"Primero mira el anuncio"
+);
+
+return;
+
+}
+  
 detenido = false;
 
 const archivo =
@@ -458,5 +473,50 @@ boton
 "🌙 Modo oscuro";
 
 }
+
+}
+function verAnuncio(){
+
+let tiempo=5;
+
+const contador=
+document
+.getElementById(
+"contador"
+);
+
+contador.innerText=
+"📺 Anuncio: 5s";
+
+const intervalo=
+setInterval(
+()=>{
+
+tiempo--;
+
+contador.innerText=
+"📺 Anuncio: "
++
+tiempo
++
+"s";
+
+if(
+tiempo<=0
+){
+
+clearInterval(
+intervalo);
+
+anuncioVisto=true;
+
+contador.innerText=
+"✅ Ya puedes leer";
+
+}
+
+},
+1000
+);
 
 }
