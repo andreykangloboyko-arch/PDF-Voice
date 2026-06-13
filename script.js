@@ -1,19 +1,9 @@
-let anuncioVisto=false;
+
 let detenido = false;
 let pausado = false;
 
 async function leerPDF(){
-if(
-!anuncioVisto
-){
 
-alert(
-"Primero mira el anuncio"
-);
-
-return;
-
-}
 detenido = false;
 
 const archivo =
@@ -402,30 +392,5 @@ boton
 "🌙 Modo oscuro";
 
 }
-
-}
-function verAnuncio(){
-
-const contador =
-document
-.getElementById(
-"contador"
-);
-
-contador.innerText =
-"⏳ Cargando...";
-
-setTimeout(
-()=>{
-
-anuncioVisto =
-true;
-
-contador.innerText =
-"✅ Ya puedes leer";
-
-},
-5000
-);
 
 }
