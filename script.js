@@ -248,12 +248,7 @@ x=>x[0]
 .join(
 ""
 );
-alert(
-texto.slice(
-0,
-100
-)
-);
+
 }catch{
 
 document
