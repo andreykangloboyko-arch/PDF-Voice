@@ -190,12 +190,77 @@ const contenido =
 await pagina
 .getTextContent();
 
-const texto =
+let texto =
 contenido.items
 .map(
 x=>x.str
 )
 .join(" ");
+
+const idioma =
+document
+.getElementById(
+"traducir"
+)
+.value;
+
+if(
+idioma
+){
+
+document
+.getElementById(
+"estado"
+)
+.innerText =
+"🌍 Traduciendo...";
+
+const url =
+"https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl="
++
+idioma
++
+"&dt=t&q="
++
+encodeURIComponent(
+texto.slice(
+0,
+1500
+)
+);
+
+try{
+
+const respuesta =
+await fetch(
+url
+);
+
+const datos =
+await respuesta.json();
+
+texto =
+datos
+[0]
+.map(
+x=>x[0]
+)
+.join(
+""
+);
+
+}catch{
+
+document
+.getElementById(
+"estado"
+)
+.innerText =
+"⚠️ Traducción no disponible";
+
+}
+
+}
 
 if(
 texto.length<20
