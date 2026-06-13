@@ -192,17 +192,17 @@ const voz =
 new SpeechSynthesisUtterance(
 texto.slice(
 0,
-3000
-)
-);
-voz.lang=
+800
+));
+
+voz.lang =
 document
 .getElementById(
 "voz"
 )
 .value;
 
-voz.rate=
+voz.rate =
 Number(
 document
 .getElementById(
@@ -211,12 +211,24 @@ document
 .value
 );
 
-voz.onend=
+voz.volume = 1;
+
+voz.onend =
 resolve;
 
-speechSynthesis
-.speak(
-voz);
+voz.onerror =
+resolve;
+
+setTimeout(
+()=>{
+
+speechSynthesis.speak(
+voz
+);
+
+},
+50
+);
 
 });
 
