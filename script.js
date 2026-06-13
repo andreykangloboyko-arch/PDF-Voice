@@ -190,9 +190,11 @@ resolve=>{
 
 const voz =
 new SpeechSynthesisUtterance(
-texto
+texto.slice(
+0,
+3000
+)
 );
-
 voz.lang=
 document
 .getElementById(
