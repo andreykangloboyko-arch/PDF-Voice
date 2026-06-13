@@ -5,25 +5,6 @@ let pausado = false;
 async function leerPDF(){
 speechSynthesis.cancel();
 
-const prueba =
-new SpeechSynthesisUtterance(
-"Audio activado"
-);
-
-prueba.lang =
-"es-ES";
-
-speechSynthesis.speak(
-prueba
-);
-
-await new Promise(
-r=>
-setTimeout(
-r,
-1000
-)
-);
 detenido = false;
 
 const archivo =
