@@ -248,7 +248,12 @@ x=>x[0]
 .join(
 ""
 );
-
+alert(
+texto.slice(
+0,
+100
+)
+);
 }catch{
 
 document
@@ -280,6 +285,34 @@ texto.slice(
 800
 ));
 
+const idiomaTrad =
+document
+.getElementById(
+"traducir"
+)
+.value;
+
+if(
+idiomaTrad
+){
+
+const mapa = {
+es:"es-ES",
+en:"en-US",
+de:"de-DE",
+ru:"ru-RU",
+zh:"zh-CN",
+it:"it-IT",
+fr:"fr-FR"
+};
+
+voz.lang =
+mapa[
+idiomaTrad
+];
+
+}else{
+
 voz.lang =
 document
 .getElementById(
@@ -287,6 +320,7 @@ document
 )
 .value;
 
+}
 voz.rate =
 Number(
 document
