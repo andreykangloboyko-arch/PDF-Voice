@@ -290,13 +290,10 @@ idiomaTrad
 }else{
 
 voz.lang =
-document
-.getElementById(
-"voz"
-)
-.value;
+navigator.language;
 
 }
+
 voz.rate =
 Number(
 document
