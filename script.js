@@ -4,7 +4,16 @@ let pausado = false;
 
 async function leerPDF(){
 speechSynthesis.cancel();
+const desbloqueo =
+new SpeechSynthesisUtterance(
+"."
+);
 
+desbloqueo.volume = 0;
+
+speechSynthesis.speak(
+desbloqueo
+);
 detenido = false;
 
 const archivo =
